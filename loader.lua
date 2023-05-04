@@ -1,5 +1,6 @@
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
+
 local Loader = Instance.new("ScreenGui")
 local LoaderFrame = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
@@ -62,27 +63,47 @@ SupportedGameLabel.TextTransparency = 1
 
 local tweenInfo = TweenInfo.new(0.5)
 
-UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
-    if input.KeyCode == Enum.KeyCode.Z then
-        TweenService:Create(LoaderFrame, tweenInfo, {
-            BackgroundTransparency = 0,
-            Size = UDim2.new(0.25, 0, 0.223, 0)
-        }):Play()
+local animationStage = -1
+local stopAllAnimations = false
 
-        wait(0.5)
+local function LoadingAnimation()
+    while wait(1) do
+        if stopAllAnimations then
+            break
+        end
 
-        TweenService:Create(TitleLabel, tweenInfo, {
-            TextTransparency = 0
-        }):Play()
-        wait(0.25)
-        TweenService:Create(SupportedGameLabel, tweenInfo, {
-            TextTransparency = 0
-        }):Play()
-        wait(0.5)
-        TweenService:Create(LoadingLabel, tweenInfo, {
-            TextTransparency = 0
-        }):Play()
+        if animationStage == 0 then
+            LoadingLabel.Text = 'loading latest script..'
+        elseif animationStage == 1 then
+            LoadingLabel.Text = 'loading latest script...'
+        elseif animationStage > 1 then
+            LoadingLabel.Text = 'loading latest script.'
+            animationStage = -1
+        end
+
+        animationStage += 1
     end
-end)
+end
 
---testt
+
+
+task.spawn(LoadingAnimation)
+
+TweenService:Create(LoaderFrame, tweenInfo, {
+    BackgroundTransparency = 0,
+    Size = UDim2.new(0.25, 0, 0.223, 0)
+}):Play()
+
+wait(0.5)
+
+TweenService:Create(TitleLabel, tweenInfo, {
+    TextTransparency = 0
+}):Play()
+wait(0.25)
+TweenService:Create(SupportedGameLabel, tweenInfo, {
+    TextTransparency = 0
+}):Play()
+wait(0.5)
+TweenService:Create(LoadingLabel, tweenInfo, {
+    TextTransparency = 0
+}):Play()
