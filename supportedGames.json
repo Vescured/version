@@ -3,6 +3,10 @@
         {
             "id": 123012939213,
             "script_name": "Brookhaven.lua"
+        },
+        {
+            "id": 1430993116,
+            "script_name": "Baseplate.lua"
         }
     ]
 }
