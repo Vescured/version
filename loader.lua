@@ -21,6 +21,7 @@ LoaderFrame.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
 LoaderFrame.Position = UDim2.new(0.374576271, 0, 0.388316154, 0)
 LoaderFrame.Size = UDim2.new(0, 0, 0.223024085, 0)
 LoaderFrame.BackgroundTransparency = 1
+LoaderFrame.ClipsDescendants = true
 
 UICorner.Parent = LoaderFrame
 
