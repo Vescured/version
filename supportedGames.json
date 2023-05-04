@@ -1,6 +1,8 @@
 {
     "games": [
-        1,
-        2
+        {
+            "id": 123012939213,
+            "script_name": "Brookhaven.lua"
+        }
     ]
 }
