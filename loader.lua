@@ -1,5 +1,6 @@
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
+local PlayersService = game:GetService('Players')
 
 local Loader = Instance.new("ScreenGui")
 local LoaderFrame = Instance.new("Frame")
@@ -61,6 +62,8 @@ SupportedGameLabel.TextColor3 = Color3.fromRGB(113, 113, 113)
 SupportedGameLabel.TextSize = 18.000
 SupportedGameLabel.TextTransparency = 1
 
+local gameUnsupported = true
+
 local tweenInfo = TweenInfo.new(0.5)
 
 local animationStage = -1
@@ -85,23 +88,67 @@ local function LoadingAnimation()
     end
 end
 
-task.spawn(LoadingAnimation)
+local function LoadAnimation()
+    TweenService:Create(LoaderFrame, tweenInfo, {
+        BackgroundTransparency = 0,
+        Size = UDim2.new(0.25, 0, 0.223, 0)
+    }):Play()
+    
+    wait(0.5)
+    
+    TweenService:Create(TitleLabel, tweenInfo, {
+        TextTransparency = 0
+    }):Play()
+    wait(0.25)
+    TweenService:Create(SupportedGameLabel, tweenInfo, {
+        TextTransparency = 0
+    }):Play()
+end
 
-TweenService:Create(LoaderFrame, tweenInfo, {
-    BackgroundTransparency = 0,
-    Size = UDim2.new(0.25, 0, 0.223, 0)
-}):Play()
+local function UnloadAnimation(loading)
+    TweenService:Create(LoaderFrame, tweenInfo, {
+        BackgroundTransparency = 1,
+        Size = UDim2.new(0, 0, 0.223, 0)
+    }):Play()
+        
+    TweenService:Create(TitleLabel, tweenInfo, {
+        TextTransparency = 1
+    }):Play()
+    TweenService:Create(SupportedGameLabel, tweenInfo, {
+        TextTransparency = 1
+    }):Play()
+
+    if loading then
+        TweenService:Create(LoadingLabel, tweenInfo, {
+            TextTransparency = 1
+        }):Play()
+    end
+end
+
+LoadAnimation()
 
 wait(0.5)
 
-TweenService:Create(TitleLabel, tweenInfo, {
-    TextTransparency = 0
-}):Play()
-wait(0.25)
-TweenService:Create(SupportedGameLabel, tweenInfo, {
-    TextTransparency = 0
-}):Play()
-wait(0.5)
-TweenService:Create(LoadingLabel, tweenInfo, {
-    TextTransparency = 0
-}):Play()
+if not gameUnsupported then
+    task.spawn(LoadingAnimation)
+
+    TweenService:Create(LoadingLabel, tweenInfo, {
+        TextTransparency = 0
+    }):Play()
+else
+    LoadingLabel.Text = 'game unsupported, please choose a supported game.'
+
+    TweenService:Create(LoadingLabel, tweenInfo, {
+        TextTransparency = 0
+    }):Play()
+
+    wait(2)
+
+    UnloadAnimation(true)
+
+    stopAllAnimations = true
+
+    wait(1.5)
+
+    Loader:Destroy()
+end
