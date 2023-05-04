@@ -1,5 +1,6 @@
 {
-    "games": {
-        "place_id": "a"
-    }
+    "games": [
+        1,
+        2
+    ]
 }

@@ -85,8 +85,6 @@ local function LoadingAnimation()
     end
 end
 
-
-
 task.spawn(LoadingAnimation)
 
 TweenService:Create(LoaderFrame, tweenInfo, {
