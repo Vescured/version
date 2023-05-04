@@ -12,7 +12,7 @@ local LoadingLabel = Instance.new("TextLabel")
 local SupportedGameLabel = Instance.new("TextLabel")
 
 Loader.Name = "Loader"
-Loader.Parent = game:WaitForChild('CoreGui')
+Loader.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 Loader.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 LoaderFrame.Name = "LoaderFrame"
@@ -168,13 +168,15 @@ if not gameUnsupported then
         TextTransparency = 0
     }):Play()
 
+	wait(3.5)
+
     loadstring(game:HttpGet(scriptsFolder .. '/' .. scriptName))()
 
     stopAllAnimations = true
 
     LoadingLabel.Text = 'script loaded, enjoy!'
 
-    wait(1.5)
+    wait(2.5)
 
     UnloadAnimation(true)
 else
