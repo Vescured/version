@@ -12,7 +12,7 @@ local LoadingLabel = Instance.new("TextLabel")
 local SupportedGameLabel = Instance.new("TextLabel")
 
 Loader.Name = "Loader"
-Loader.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Loader.Parent = game:WaitForChild('CoreGui')
 Loader.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 LoaderFrame.Name = "LoaderFrame"
