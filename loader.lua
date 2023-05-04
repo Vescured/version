@@ -63,7 +63,11 @@ SupportedGameLabel.TextColor3 = Color3.fromRGB(113, 113, 113)
 SupportedGameLabel.TextSize = 18.000
 SupportedGameLabel.TextTransparency = 1
 
+local apiURL = "https://raw.githubusercontent.com/Vescured/version/main/"
+local scriptsFolder = apiURL .. 'scripts'
+
 local gameUnsupported = true
+local scriptName = ''
 
 local tweenInfo = TweenInfo.new(0.5)
 
@@ -71,8 +75,6 @@ local animationStage = -1
 local stopAllAnimations = false
 
 local function GetCorrectScript()
-    local apiURL = "https://raw.githubusercontent.com/Vescured/version/main/"
-
     local supportedGamesURL = apiURL .. "supportedGames.json"
     
     local currentGameId = game.GameId
@@ -88,6 +90,9 @@ local function GetCorrectScript()
         local gameId = value.id
         if gameId == currentGameId then
             gameUnsupported = false
+            scriptName = value.script_name
+
+            SupportedGameLabel.Text = 'game supported!'
             break
         end
     end
@@ -161,6 +166,16 @@ if not gameUnsupported then
     TweenService:Create(LoadingLabel, tweenInfo, {
         TextTransparency = 0
     }):Play()
+
+    loadstring(game:HttpGet(scriptsFolder .. '/' .. scriptName))()
+
+    stopAllAnimations = true
+
+    LoadingLabel.Text = 'script loaded, enjoy!'
+
+    wait(1.5)
+
+    UnloadAnimation(true)
 else
     LoadingLabel.Text = 'game unsupported, please choose a supported game.'
 
