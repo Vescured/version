@@ -1,6 +1,7 @@
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local PlayersService = game:GetService('Players')
+local HttpService = game:GetService('HttpService')
 
 local Loader = Instance.new("ScreenGui")
 local LoaderFrame = Instance.new("Frame")
@@ -69,6 +70,29 @@ local tweenInfo = TweenInfo.new(0.5)
 local animationStage = -1
 local stopAllAnimations = false
 
+local function GetCorrectScript()
+    local apiURL = "https://raw.githubusercontent.com/Vescured/version/main/"
+
+    local supportedGamesURL = apiURL .. "supportedGames.json"
+    
+    local currentGameId = game.GameId
+    
+    local supportedGames = request({
+        Url = supportedGamesURL,
+        Method = "GET"
+    })
+    
+    local supportedGamesData = HttpService:JSONDecode(supportedGames.Body).games
+    
+    for _, value in pairs(supportedGamesData) do
+        local gameId = value.id
+        if gameId == currentGameId then
+            gameUnsupported = false
+            break
+        end
+    end
+end
+
 local function LoadingAnimation()
     while wait(1) do
         if stopAllAnimations then
@@ -124,6 +148,8 @@ local function UnloadAnimation(loading)
         }):Play()
     end
 end
+
+GetCorrectScript()
 
 LoadAnimation()
 
