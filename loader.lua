@@ -21,7 +21,6 @@ LoaderFrame.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
 LoaderFrame.Position = UDim2.new(0.374576271, 0, 0.388316154, 0)
 LoaderFrame.Size = UDim2.new(0, 0, 0.223024085, 0)
 LoaderFrame.BackgroundTransparency = 1
-LoaderFrame.ClipsDescendants = true
 
 UICorner.Parent = LoaderFrame
 
@@ -80,19 +79,15 @@ local function GetCorrectScript()
     
     local currentGameId = game.GameId
     
-    local supportedGames = request({
-        Url = supportedGamesURL,
-        Method = "GET"
-    })
+    local supportedGames = game:HttpGet(supportedGamesURL)
     
-    local supportedGamesData = HttpService:JSONDecode(supportedGames.Body).games
+    local supportedGamesData = HttpService:JSONDecode(supportedGames).games
     
     for _, value in pairs(supportedGamesData) do
         local gameId = value.id
         if gameId == currentGameId then
             gameUnsupported = false
             scriptName = value.script_name
-
             SupportedGameLabel.Text = 'game supported!'
             break
         end
